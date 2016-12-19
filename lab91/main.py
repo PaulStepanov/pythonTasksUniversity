@@ -26,7 +26,7 @@ def prime_divisor(n):
     a = [True for i in range(n)]  # всем значениям присваиваем true
 
     for i in range(2, int(sqrt(n))):
-        if a[i] == True:
+        if a[i]:
             for j in range(i * i, n, i):
                 a[j] = False  # всем значениям массива присваивается false
 
