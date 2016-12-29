@@ -8,7 +8,11 @@ class Resource:
         self.res_type = res_type
         self.capacity = capacity
 
-    def start_consume(self, value):  #
+    def start_consume(self, value):
+        """
+        Начинается потреблемение ресурса возвращает кортеж:первый элемен 1 или 0 хватилоли ресурсов,
+        второй количество потребляемых ресурсов
+        """
         if value > self.capacity:
             self.__consuming_resources_size = self.capacity
             self.capacity = 0
@@ -18,6 +22,9 @@ class Resource:
         return (1,value)
 
     def release_resources(self, value):
+        """
+        Высвобождает потребляемый ресурс,ничего не возращает
+        """
         self.capacity += value
         self.__consuming_resources_size -= value
 
@@ -28,11 +35,13 @@ class Provider:
     resources = []
 
     def __init__(self, name, category, resources):
+        """"""
         self.name = name
         self.category = category
         self.resources = resources
 
     def getResources(self, resource, amount, time=None):
+        """Начинается потребление ресурса в заданом количестве,время передается для логированиея ошибок"""
         resur = None
         for res in self.resources:
             if res.res_type == resource:
@@ -45,6 +54,7 @@ class Provider:
             return (0,flag[1])
 
     def releaseResources(self, resource, amount):
+        """Высвобождается ресурс в указаном количестве"""
         resur = None
         for res in self.resources:
             if res.res_type == resource:
@@ -63,12 +73,14 @@ class Consumer:
         self.consuming_resources = consuming_resources
 
     def consume(self, resource, amount, provider, time):
+        """Начинает потреблять ресурс в указаном количестве у указанного провайдера,время передается для логирования ошибок """
         cons_amount=provider.getResources(resource, amount, time=time)[1]
         if cons_amount<amount:
             print("not enought res consumer:",self.name,"time:",time,"we have",cons_amount)
         self.consuming_size+=cons_amount
         self.consuming_resources_tuple.append((resource, cons_amount,provider))
     def stopConsume(self):
+        """Прекращает потребление всех ресурсов """
         for res in self.consuming_resources_tuple:
             res[2].releaseResources(res[0],res[1])
 
